@@ -5,6 +5,7 @@ const { TOKEN } = process.env;
 
 const threadPolice = require("./apps/threadPolice");
 const buttonMaker = require("./apps/buttonMaker");
+const messagePreview = require("./apps/messagePreview");
 
 const client = new Discord.Client({
   intents: Object.keys(Discord.Intents.FLAGS),
@@ -24,12 +25,14 @@ client.on("messageCreate", async (msg) => {
 const main = async () => {
   await threadPolice.call(client);
   await buttonMaker.call(client);
+  await messagePreview.call(client);
   await client.login(TOKEN);
 };
 
 main();
 
 const express = require("express");
+const req = require("express/lib/request");
 const app = express();
 app.set("port", process.env.PORT || 5000);
 const server = app.listen(app.get("port"), () => {

@@ -11,11 +11,13 @@ exports.call = async (client) => {
         const targetMsg = await msg.channel.parent.messages.fetch(targetMsgId);
 
         await msg.channel.send({
+          content: `${targetMsg.author}`,
           embeds: [
             {
               author: {
                 name: targetMsg.member.displayName,
                 icon_url: targetMsg.member.displayAvatarURL(),
+                url: targetMsg.url,
               },
               description: targetMsg.content,
               color: targetMsg.author.hexAccentColor,
@@ -23,7 +25,9 @@ exports.call = async (client) => {
             },
           ],
         });
-        await targetMsg.delete();
+        await msg.channel.send({
+          embeds: targetMsg.embeds,
+        });
       } catch (e) {
         console.error(e);
       }
@@ -45,11 +49,13 @@ exports.call = async (client) => {
 
         if (targetMsg.hasThread) {
           await targetMsg.thread.send({
+            content: `${msg.author}`,
             embeds: [
               {
                 author: {
                   name: msg.member.displayName,
                   icon_url: msg.member.displayAvatarURL(),
+                  url: msg.url,
                 },
                 description: msg.content,
                 color: msg.author.hexAccentColor,
@@ -57,9 +63,12 @@ exports.call = async (client) => {
               },
             ],
           });
+          await targetMsg.thread.send({
+            embeds: msg.embeds,
+          });
         }
 
-        msg.delete();
+        //msg.delete();
       } catch (e) {
         console.error(e);
       }
