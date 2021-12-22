@@ -16,8 +16,12 @@ exports.call = async (client) => {
             embeds: [
               {
                 author: {
-                  name: message.member.displayName,
-                  icon_url: message.member.displayAvatarURL(),
+                  name: _.get(message, ["member", "displayName"], "???"),
+                  icon_url: _.get(message, [
+                    "member",
+                    "displayAvatarURL",
+                    () => "",
+                  ])(),
                   url: message.url,
                 },
                 description: message.content,
