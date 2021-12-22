@@ -10,18 +10,15 @@ exports.call = async (client) => {
         try {
           const channel = await msg.guild.channels.fetch(_.get(ids, 5));
           const message = await channel.messages.fetch(_.get(ids, 6));
+          const member = message.member;
           console.log(message.embeds);
           await msg.channel.send({
             content: `${message.channel}`,
             embeds: [
               {
                 author: {
-                  name: _.get(message, ["member", "displayName"], "???"),
-                  icon_url: _.get(message, [
-                    "member",
-                    "displayAvatarURL",
-                    () => "",
-                  ])(),
+                  name: member ? member.displayName : "???",
+                  icon_url: member ? member.displayAvatarURL() : "",
                   url: message.url,
                 },
                 description: message.content,
